@@ -1,0 +1,11 @@
+page { background: #f5f6f8; color: #202532; font-size: 29rpx; }
+view, text, button, input { box-sizing: border-box; }
+button { margin: 0; }
+.page { min-height: 100vh; padding: 34rpx 28rpx 150rpx; }
+.panel { background: #fff; border-radius: 18rpx; margin-bottom: 28rpx; padding: 32rpx 28rpx; box-shadow: 0 8rpx 24rpx rgba(32, 45, 72, .04); }
+.muted { color: #8b929f; }
+.primary { background: #1677ff; color: #fff; }
+.danger { color: #e5484d; }
+.empty { padding: 150rpx 0; text-align: center; color: #9299a5; }
+.row { display: flex; align-items: center; }
+.between { display: flex; justify-content: space-between; align-items: center; }

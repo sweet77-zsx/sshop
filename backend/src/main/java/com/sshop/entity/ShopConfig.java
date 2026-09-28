@@ -1,0 +1,3 @@
+package com.sshop.entity;
+import com.baomidou.mybatisplus.annotation.*; import lombok.Data; import java.time.LocalDateTime;
+@Data @TableName("cs_shop_config") public class ShopConfig { @TableId("config_id") private Long configId; @TableField("pay_qrcode") private String payQrcode; @TableField("delivery_tip") private String deliveryTip; @TableField("stock_warning") private Integer stockWarning; @TableField("shop_status") private Integer shopStatus; @TableField("create_time") private LocalDateTime createTime; @TableField("update_time") private LocalDateTime updateTime; @TableField("del_flag") private Integer delFlag; }

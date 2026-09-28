@@ -1,0 +1,14 @@
+<view class="page">
+  <view wx:if="{{shop}}" class="shop-status {{shop.shopStatus === 0 ? 'closed' : ''}}">{{shopStatusText}}<text wx:if="{{shop.shopStatus === 0}}">，暂不可下单</text></view>
+  <view wx:if="{{shop && shop.deliveryTip}}" class="delivery-tip">{{shop.deliveryTip}}</view>
+  <view class="search"><input placeholder="搜索商品" confirm-type="search" bindconfirm="search" /></view>
+  <view wx:if="{{loading}}" class="empty">加载中...</view>
+  <view wx:elif="{{!products.length}}" class="empty">暂无商品</view>
+  <view wx:else class="grid">
+    <view class="product panel" wx:for="{{products}}" wx:key="goodsId">
+      <image class="cover" src="{{item.goodsCover}}" mode="aspectFill" />
+      <view class="name">{{item.goodsName}}</view><view class="muted">{{item.goodsRemark}}</view><view class="stock">库存 {{item.goodsStock}}</view>
+      <view class="between"><text class="price">¥{{item.goodsPrice}}</text><button class="add" disabled="{{item.goodsStock <= 0}}" data-product="{{item}}" bindtap="add">{{item.goodsStock <= 0 ? '缺货' : '加入'}}</button></view>
+    </view>
+  </view>
+</view>

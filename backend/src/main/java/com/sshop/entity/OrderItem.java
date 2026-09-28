@@ -1,0 +1,3 @@
+package com.sshop.entity;
+import com.baomidou.mybatisplus.annotation.*; import lombok.Data; import java.math.BigDecimal;
+@Data @TableName("cs_order_item") public class OrderItem { @TableId("item_id") private Long itemId; @TableField("order_no") private String orderNo; @TableField("goods_id") private Long goodsId; @TableField("goods_name") private String goodsName; @TableField("goods_price") private BigDecimal goodsPrice; @TableField("goods_num") private Integer goodsNum; @TableField("create_time") private java.time.LocalDateTime createTime; @TableField("update_time") private java.time.LocalDateTime updateTime; @TableField("del_flag") private Integer delFlag; }

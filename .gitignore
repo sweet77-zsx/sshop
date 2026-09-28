@@ -1,0 +1,26 @@
+# Java / Spring Boot
+backend/target/
+backend/uploads/
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Vue / Vite
+frontend-web/node_modules/
+frontend-web/dist/
+frontend-web/.env
+frontend-web/.env.*
+!frontend-web/.env.example
+
+# Local configuration and secrets
+*.local.yml
+*.local.yaml
+application-local.yml
+application-local.yaml
+
+# OS files
+.DS_Store
+Thumbs.db

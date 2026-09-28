@@ -1,0 +1,1 @@
+.tabs { white-space: nowrap; background: #fff; margin: -34rpx -28rpx 30rpx; width: calc(100% + 56rpx); }.tab { display: inline-block; padding: 32rpx 28rpx 26rpx; }.tab.active { color: #1677ff; border-bottom: 4rpx solid #1677ff; }.summary { padding: 32rpx 0; }.status { color: #1677ff; }

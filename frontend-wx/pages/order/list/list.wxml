@@ -1,0 +1,13 @@
+<view class="page">
+  <scroll-view scroll-x class="tabs">
+    <view class="tab {{active === item.key ? 'active' : ''}}" wx:for="{{tabs}}" wx:key="key" data-status="{{item.key}}" bindtap="select">{{item.name}}</view>
+  </scroll-view>
+  <view wx:if="{{loading}}" class="empty">加载中...</view>
+  <view wx:elif="{{!orders.length}}" class="empty">暂无订单</view>
+  <block wx:else>
+    <view class="panel order" wx:for="{{orders}}" wx:key="orderNo" data-order-no="{{item.orderNo}}" bindtap="detail">
+      <view class="between"><text>订单 {{item.orderNo}}</text><text class="status">{{item.statusText}}</text></view>
+      <view class="between"><text class="muted">{{item.createTime}}</text><text>¥{{item.totalAmount}}</text></view>
+    </view>
+  </block>
+</view>

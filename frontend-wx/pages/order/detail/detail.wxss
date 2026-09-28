@@ -1,0 +1,1 @@
+.hero { padding: 40rpx 24rpx; }.hero .status { font-size: 38rpx; font-weight: bold; margin-bottom: 12rpx; }.line { padding: 16rpx 0; }.total { margin-top: 20rpx; padding-top: 20rpx; border-top: 1rpx solid #eee; }.info { padding-top: 18rpx; }.qrcode { display: block; width: 560rpx; height: 560rpx; max-width: 100%; margin: 20rpx auto 0; }.pay { margin: 30rpx 0; }

@@ -1,0 +1,1 @@
+.merchant-nav { padding: 22rpx 0 28rpx; font-size: 36rpx; font-weight: 700; }.title { font-size: 38rpx; font-weight: 700; margin-bottom: 36rpx; }.input { padding: 24rpx 0; border-bottom: 1rpx solid #eee; margin-bottom: 18rpx; }
