@@ -1,14 +1,157 @@
 <view class="page">
-  <view wx:if="{{shop}}" class="shop-status {{shop.shopStatus === 0 ? 'closed' : ''}}">{{shopStatusText}}<text wx:if="{{shop.shopStatus === 0}}">，暂不可下单</text></view>
-  <view wx:if="{{shop && shop.deliveryTip}}" class="delivery-tip">{{shop.deliveryTip}}</view>
-  <view class="search"><input placeholder="搜索商品" confirm-type="search" bindconfirm="search" /></view>
-  <view wx:if="{{loading}}" class="empty">加载中...</view>
-  <view wx:elif="{{!products.length}}" class="empty">暂无商品</view>
-  <view wx:else class="grid">
-    <view class="product panel" wx:for="{{products}}" wx:key="goodsId">
-      <image class="cover" src="{{item.goodsCover}}" mode="aspectFill" />
-      <view class="name">{{item.goodsName}}</view><view class="muted">{{item.goodsRemark}}</view><view class="stock">库存 {{item.goodsStock}}</view>
-      <view class="between"><text class="price">¥{{item.goodsPrice}}</text><button class="add" disabled="{{item.goodsStock <= 0}}" data-product="{{item}}" bindtap="add">{{item.goodsStock <= 0 ? '缺货' : '加入'}}</button></view>
+  <!-- 店铺卡片 -->
+  <view class="store-card">
+    <view class="store-info-row">
+      <view class="store-avatar">
+        <text class="store-avatar-text">食</text>
+      </view>
+      <view class="store-detail">
+        <view class="store-title-row">
+          <text class="store-name">食刻零食小铺</text>
+          <view class="status-pill {{shop && shop.shopStatus === 0 ? 'closed' : 'open'}}">
+            <view class="status-dot"></view>
+            <text>{{shopStatusText}}</text>
+          </view>
+        </view>
+        <view class="store-slogan">
+          <text class="slogan-badge">直达寝室</text>
+          <text class="slogan-text">免配送费 · 送达扫码付款</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 配送公告 -->
+    <view wx:if="{{shop && shop.deliveryTip}}" class="notice-bar">
+      <text class="notice-icon">📢</text>
+      <text class="notice-content">{{shop.deliveryTip}}</text>
+    </view>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-box">
+    <view class="search-inner">
+      <text class="search-icon">🔍</text>
+      <input 
+        class="search-input" 
+        placeholder="搜索想吃的零食、饮料、方便面..." 
+        value="{{keyword}}" 
+        confirm-type="search" 
+        bindinput="onSearchInput" 
+        bindconfirm="search" 
+      />
+      <view wx:if="{{keyword}}" class="search-clear" bindtap="clearSearch">✕</view>
+    </view>
+  </view>
+
+  <!-- 快速分类标签 -->
+  <scroll-view scroll-x class="category-scroll" enable-flex>
+    <view 
+      wx:for="{{categories}}" 
+      wx:key="*this" 
+      class="category-item {{currentCategory === item ? 'active' : ''}}" 
+      data-name="{{item}}" 
+      bindtap="selectCategory"
+    >
+      {{item}}
+    </view>
+  </scroll-view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="empty">
+    <view class="loading-spinner"></view>
+    <text class="empty-desc">美味零食搜寻中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:elif="{{!products.length}}" class="empty">
+    <view class="empty-icon">🍿</view>
+    <view class="empty-title">没有找到相关零食</view>
+    <view class="empty-desc">换个关键词试试，或者看看其他分类</view>
+    <button class="btn-secondary btn-sm" bindtap="clearSearch">查看全部零食</button>
+  </view>
+
+  <!-- 商品网格列表 -->
+  <view wx:else class="product-grid">
+    <view 
+      class="product-card" 
+      wx:for="{{products}}" 
+      wx:key="goodsId"
+      hover-class="card-hover"
+      hover-stay-time="100"
+    >
+      <!-- 商品封面 -->
+      <view class="cover-wrapper">
+        <image 
+          wx:if="{{item.goodsCover}}" 
+          class="cover-image" 
+          src="{{item.goodsCover}}" 
+          mode="aspectFill" 
+          lazy-load 
+        />
+        <view wx:else class="cover-placeholder">
+          <text class="placeholder-icon">🍫</text>
+          <text class="placeholder-text">{{item.goodsName}}</text>
+        </view>
+
+        <!-- 售罄遮罩 -->
+        <view wx:if="{{item.goodsStock <= 0}}" class="sold-out-mask">
+          <text class="sold-out-badge">已售罄</text>
+        </view>
+      </view>
+
+      <!-- 商品内容 -->
+      <view class="product-content">
+        <view class="product-name">{{item.goodsName}}</view>
+        <view class="product-remark">{{item.goodsRemark || '校园专属美味零食'}}</view>
+
+        <!-- 库存状态 -->
+        <view class="stock-status">
+          <text wx:if="{{item.goodsStock <= 0}}" class="stock-pill out">缺货中</text>
+          <text wx:elif="{{item.goodsStock <= 5}}" class="stock-pill low">仅剩 {{item.goodsStock}} 件</text>
+          <text wx:else class="stock-pill normal">库存 {{item.goodsStock}}</text>
+        </view>
+
+        <!-- 价格与加购 -->
+        <view class="product-footer">
+          <view class="price-box">
+            <text class="price-symbol">¥</text>
+            <text class="price-val">{{item.goodsPrice}}</text>
+          </view>
+
+          <!-- 加购按钮 -->
+          <view 
+            class="add-btn-wrap" 
+            data-product="{{item}}" 
+            bindtap="add"
+          >
+            <view class="add-btn {{item.goodsStock <= 0 ? 'disabled' : ''}}">
+              <text class="plus-icon">+</text>
+            </view>
+            <text wx:if="{{item.cartNum > 0}}" class="cart-badge">{{item.cartNum}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部快捷悬浮购物车胶囊 -->
+  <view wx:if="{{cartCount > 0}}" class="float-cart-bar" bindtap="goCart">
+    <view class="float-cart-left">
+      <view class="cart-icon-bubble">
+        <text class="bubble-icon">🛒</text>
+        <text class="bubble-badge">{{cartCount}}</text>
+      </view>
+      <view class="float-cart-info">
+        <view class="float-total-price">
+          <text class="float-symbol">¥</text>
+          <text class="float-amount">{{cartTotal}}</text>
+        </view>
+        <text class="float-sub">免配送费 · 寝室直达</text>
+      </view>
+    </view>
+    <view class="float-cart-btn">
+      <text>去结算</text>
+      <text class="arrow">→</text>
     </view>
   </view>
 </view>

@@ -1,1 +1,123 @@
-<view class="page"><view wx:if="{{order}}"><view class="panel hero"><view class="status">{{order.statusText}}</view></view><view class="panel"><view class="section-title">商品</view><view class="line between" wx:for="{{order.itemList}}" wx:key="itemId"><text>{{item.goodsName}} × {{item.goodsNum}}</text><text>¥{{item.goodsPrice}}</text></view><view class="between total"><text>应付金额</text><text class="price">¥{{order.totalAmount}}</text></view></view><view class="panel"><view>收货信息</view><view class="muted info">{{order.addressInfo}}</view><view class="muted info">{{order.remark}}</view><view class="muted info">订单号：{{order.orderNo}}</view><view class="muted">下单时间：{{order.createTime}}</view></view><view class="panel" wx:if="{{order.payQrcode}}"><view class="section-title">送达后扫码付款</view><image class="qrcode" src="{{order.payQrcode}}" mode="aspectFit" /><view class="muted">{{order.deliveryTip}}</view></view></view></view>
+<view class="page page-no-bottom">
+  <block wx:if="{{order}}">
+    <!-- 头部状态彩卡 Hero -->
+    <view class="hero-card {{statusMeta.bgClass}}">
+      <view class="hero-left">
+        <view class="hero-title-row">
+          <text class="hero-title">{{statusMeta.title}}</text>
+        </view>
+        <view class="hero-desc">{{statusMeta.desc}}</view>
+      </view>
+      <view class="hero-icon-bubble">
+        <text class="hero-icon">{{statusMeta.icon}}</text>
+      </view>
+    </view>
+
+    <!-- 核心：线下扫码付款专区 -->
+    <view class="card qr-card" wx:if="{{order.payQrcode}}">
+      <view class="qr-header between">
+        <view class="row">
+          <text class="card-icon">💳</text>
+          <text class="card-title">送达后扫码付款</text>
+        </view>
+        <text class="qr-click-tip" bindtap="previewQrcode">点击放大出示</text>
+      </view>
+
+      <view class="qr-box" bindtap="previewQrcode">
+        <image class="qr-image" src="{{order.payQrcode}}" mode="aspectFit" />
+        <view class="qr-zoom-hint">
+          <text class="zoom-icon">🔍</text>
+          <text>点击查看高清大图</text>
+        </view>
+      </view>
+
+      <view class="qr-tip-box" wx:if="{{order.deliveryTip}}">
+        <text class="qr-tip-icon">📢</text>
+        <text class="qr-tip-text">{{order.deliveryTip}}</text>
+      </view>
+      <view class="qr-bottom-note">
+        * 请在骑手送达宿舍时出示核对并当面扫码付款
+      </view>
+    </view>
+
+    <!-- 收货配送信息卡片 -->
+    <view class="card info-card">
+      <view class="card-title-row">
+        <text class="card-icon">🏢</text>
+        <text class="card-title">配送信息</text>
+      </view>
+      <view class="info-list">
+        <view class="info-item">
+          <text class="info-label">送达寝室</text>
+          <text class="info-value bold">{{order.addressInfo}}</text>
+        </view>
+        <view class="info-item" wx:if="{{order.remark}}">
+          <text class="info-label">订单备注</text>
+          <text class="info-value">{{order.remark}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">订单编号</text>
+          <view class="info-value-row">
+            <text class="info-value code">{{order.orderNo}}</text>
+            <text class="copy-link" bindtap="copyOrderNo">复制</text>
+          </view>
+        </view>
+        <view class="info-item">
+          <text class="info-label">下单时间</text>
+          <text class="info-value">{{order.createTime}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 商品明细卡片 -->
+    <view class="card items-card">
+      <view class="card-title-row">
+        <text class="card-icon">🛍️</text>
+        <text class="card-title">商品明细</text>
+      </view>
+      <view class="detail-items-list">
+        <view class="detail-item-row" wx:for="{{order.itemList}}" wx:key="itemId">
+          <view class="detail-item-main">
+            <text class="detail-item-name">{{item.goodsName}}</text>
+            <text class="detail-item-count">× {{item.goodsNum}}</text>
+          </view>
+          <view class="detail-item-subtotal">
+            <text class="symbol">¥</text>
+            <text class="val">{{item.goodsPrice}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="detail-divider"></view>
+
+      <!-- 费用核算 -->
+      <view class="cost-summary">
+        <view class="cost-row between">
+          <text class="cost-label">商品总计</text>
+          <text class="cost-val">¥{{order.totalAmount}}</text>
+        </view>
+        <view class="cost-row between">
+          <text class="cost-label">配送费</text>
+          <text class="cost-val green">¥0.00 (免费配送)</text>
+        </view>
+        <view class="cost-row between total-row">
+          <text class="total-label">需付款</text>
+          <view class="price-box">
+            <text class="price-symbol">¥</text>
+            <text class="price-val total-val">{{order.totalAmount}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 返回首页按钮 -->
+    <view class="bottom-actions">
+      <button class="btn-primary" bindtap="goHome">返回零食商城</button>
+    </view>
+  </block>
+
+  <view wx:else class="empty">
+    <view class="loading-spinner"></view>
+    <view class="empty-desc">加载订单中...</view>
+  </view>
+</view>

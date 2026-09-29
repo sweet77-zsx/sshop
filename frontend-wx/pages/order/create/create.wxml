@@ -1,1 +1,129 @@
-<view class="page"><view class="panel"><view class="section-title">商品清单</view><view class="line between" wx:for="{{items}}" wx:key="goodsId"><text>{{item.goodsName}} × {{item.goodsNum}}</text><text>¥{{item.goodsPrice}}</text></view></view><view class="panel"><view class="section-title">收货地址</view><input placeholder="请输入楼栋和房间号" data-field="addressInfo" bindinput="input" value="{{addressInfo}}" /><textarea placeholder="订单备注（选填）" data-field="remark" bindinput="input" /></view><view class="footer between"><text>应付 ¥{{total}}</text><button class="primary" loading="{{submitting}}" bindtap="submit">提交订单</button></view></view>
+<view class="page">
+  <!-- 顶部提示横幅 -->
+  <view class="order-notice">
+    <text class="notice-icon">🛵</text>
+    <text class="notice-text">校园专人配送直达宿舍门口，商品送达后出示收款码核对支付</text>
+  </view>
+
+  <!-- 收货地址卡片 -->
+  <view class="card address-card">
+    <view class="card-header">
+      <text class="header-icon">🏢</text>
+      <text class="header-title">收货宿舍地址</text>
+      <text class="header-required">*必填</text>
+    </view>
+    <view class="address-input-wrapper">
+      <input 
+        class="address-input" 
+        placeholder="请输入楼栋与房间号（如：12号楼 503室）" 
+        data-field="addressInfo" 
+        bindinput="input" 
+        value="{{addressInfo}}" 
+      />
+    </view>
+    <!-- 快捷楼栋标签 -->
+    <view class="quick-chips">
+      <text class="chips-label">快捷填入：</text>
+      <view class="chips-list">
+        <text 
+          wx:for="{{buildingPresets}}" 
+          wx:key="*this" 
+          class="chip-item" 
+          data-val="{{item}}" 
+          bindtap="quickBuilding"
+        >{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 配送备注卡片 -->
+  <view class="card remark-card">
+    <view class="card-header">
+      <text class="header-icon">📝</text>
+      <text class="header-title">订单备注</text>
+      <text class="header-optional">（选填）</text>
+    </view>
+    <textarea 
+      class="remark-textarea" 
+      placeholder="如：放门把手、轻声敲门、到楼下先打电话等" 
+      data-field="remark" 
+      bindinput="input" 
+      value="{{remark}}" 
+      maxlength="100" 
+    />
+    <!-- 快捷备注便签 -->
+    <view class="quick-chips">
+      <view class="chips-list">
+        <text 
+          wx:for="{{remarkPresets}}" 
+          wx:key="*this" 
+          class="chip-item" 
+          data-tag="{{item}}" 
+          bindtap="quickRemark"
+        >{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 商品明细卡片 -->
+  <view class="card items-card">
+    <view class="card-header between">
+      <view class="row">
+        <text class="header-icon">🛍️</text>
+        <text class="header-title">商品清单</text>
+      </view>
+      <text class="header-count">共 {{totalCount}} 件</text>
+    </view>
+
+    <view class="items-list">
+      <view class="order-item-row" wx:for="{{items}}" wx:key="goodsId">
+        <view class="item-name-group">
+          <text class="item-name">{{item.goodsName}}</text>
+          <text class="item-count">× {{item.goodsNum}}</text>
+        </view>
+        <view class="item-price">
+          <text class="item-symbol">¥</text>
+          <text class="item-val">{{item.goodsPrice}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 结算明细卡片 -->
+  <view class="card bill-card">
+    <view class="bill-row between">
+      <text class="bill-label">商品总额</text>
+      <text class="bill-value">¥{{total}}</text>
+    </view>
+    <view class="bill-row between">
+      <text class="bill-label">宿舍配送费</text>
+      <text class="bill-value free">¥0.00 (校园特惠)</text>
+    </view>
+    <view class="bill-row between">
+      <text class="bill-label">支付方式</text>
+      <text class="bill-value pay-type">线下送达扫码付款</text>
+    </view>
+    <view class="bill-divider"></view>
+    <view class="bill-row between bill-total-row">
+      <text class="bill-total-label">实付总计</text>
+      <view class="price-box">
+        <text class="price-symbol">¥</text>
+        <text class="price-val bill-total-val">{{total}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部固定提交栏 -->
+  <view class="submit-bar">
+    <view class="submit-left">
+      <text class="submit-label">实付:</text>
+      <view class="price-box">
+        <text class="price-symbol">¥</text>
+        <text class="price-val submit-price-val">{{total}}</text>
+      </view>
+    </view>
+    <button class="submit-btn" loading="{{submitting}}" bindtap="submit">
+      立即提交订单
+    </button>
+  </view>
+</view>

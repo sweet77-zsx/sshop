@@ -1,1 +1,119 @@
-<view class="page"><view class="merchant-nav between"><text>订单详情</text><button class="nav-logout" bindtap="logout">退出配送端</button></view><view wx:if="{{detail}}"><view class="panel"><view class="order-title">订单详情</view><view class="order-no">{{detail.order.orderNo}}</view><view class="status">{{statusText}}</view><view class="address">{{detail.order.addressInfo}}</view><view class="remark">备注：{{detail.order.remark || '无'}}</view><view class="detail-actions"><button wx:if="{{detail.order.orderStatus == 0}}" class="action accept" data-type="accept" bindtap="action">接单</button><button wx:if="{{detail.order.orderStatus == 0}}" class="action reject" data-type="reject" bindtap="action">拒绝</button><button wx:if="{{detail.order.orderStatus == 1}}" class="action finish" data-type="finish" bindtap="action">确认完成</button></view></view><view class="panel"><view class="section-title">商品明细</view><view class="line between" wx:for="{{detail.itemList}}" wx:key="itemId"><text>{{item.goodsName}} × {{item.goodsNum}}</text><text>¥{{item.goodsPrice}}</text></view><view class="between total"><text>合计</text><text class="price">¥{{detail.order.totalAmount}}</text></view></view><view class="panel qr-panel"><view class="between"><view class="section-title">线下收款码</view><button wx:if="{{detail.payQrcode}}" class="open-qr" bindtap="openQrcode">打开大图</button></view><image wx:if="{{detail.payQrcode}}" class="qrcode" src="{{detail.payQrcode}}" mode="aspectFit" /><view wx:else class="muted">暂无收款码</view><view class="muted">送达后请让顾客扫码付款</view></view></view><view wx:else class="empty">订单加载失败</view></view>
+<view class="page page-no-bottom">
+  <!-- 顶部导航 -->
+  <view class="merchant-nav-bar between">
+    <view class="nav-back-btn" bindtap="goBack">
+      <text class="arrow">←</text>
+      <text>返回订单列表</text>
+    </view>
+    <button class="nav-logout-btn" bindtap="logout">退出配送端</button>
+  </view>
+
+  <block wx:if="{{detail && detail.order}}">
+    <!-- 状态彩卡 -->
+    <view class="merchant-hero-card {{statusClass}}">
+      <view class="hero-left">
+        <view class="status-name-row">
+          <text class="status-icon">{{statusIcon}}</text>
+          <text class="status-title">{{statusText}}</text>
+        </view>
+        <text class="order-no-sub">订单号：{{detail.order.orderNo}}</text>
+      </view>
+      <view class="hero-price">
+        <text class="price-sub">应收款</text>
+        <view class="price-box">
+          <text class="price-symbol">¥</text>
+          <text class="price-val">{{detail.order.totalAmount}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 配送核心地址卡片 -->
+    <view class="card address-card">
+      <view class="card-title-row">
+        <text class="card-icon">🏢</text>
+        <text class="card-title">送货目标宿舍</text>
+      </view>
+      <view class="address-highlight">
+        {{detail.order.addressInfo}}
+      </view>
+      <view class="remark-row" wx:if="{{detail.order.remark}}">
+        <text class="remark-label">顾客备注：</text>
+        <text class="remark-text">{{detail.order.remark}}</text>
+      </view>
+      <view class="meta-row">
+        <text class="meta-label">下单时间：</text>
+        <text class="meta-val">{{detail.order.createTime}}</text>
+      </view>
+    </view>
+
+    <!-- 快捷操作按钮 -->
+    <view class="actions-card" wx:if="{{detail.order.orderStatus == 0 || detail.order.orderStatus == 1}}">
+      <block wx:if="{{detail.order.orderStatus == 0}}">
+        <button class="btn-action btn-reject" data-type="reject" bindtap="action">
+          拒绝此单
+        </button>
+        <button class="btn-action btn-accept" data-type="accept" bindtap="action">
+          立即接单配送
+        </button>
+      </block>
+      <block wx:if="{{detail.order.orderStatus == 1}}">
+        <button class="btn-action btn-finish" data-type="finish" bindtap="action">
+          ✓ 确认商品送达并扫码收款
+        </button>
+      </block>
+    </view>
+
+    <!-- 商品明细清单 -->
+    <view class="card goods-card">
+      <view class="card-title-row between">
+        <view class="row">
+          <text class="card-icon">🛍️</text>
+          <text class="card-title">送货商品清单</text>
+        </view>
+        <text class="goods-total-count">共 {{detail.itemList.length}} 种商品</text>
+      </view>
+      <view class="goods-list">
+        <view class="goods-item between" wx:for="{{detail.itemList}}" wx:key="itemId">
+          <view class="goods-name-group">
+            <text class="goods-name">{{item.goodsName}}</text>
+            <text class="goods-num">× {{item.goodsNum}}</text>
+          </view>
+          <text class="goods-price">¥{{item.goodsPrice}}</text>
+        </view>
+      </view>
+      <view class="goods-divider"></view>
+      <view class="between goods-total-row">
+        <text class="total-label">合计金额</text>
+        <view class="price-box">
+          <text class="price-symbol">¥</text>
+          <text class="price-val">{{detail.order.totalAmount}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 收款码出示区（方便骑手当面让顾客扫码） -->
+    <view class="card qrcode-card">
+      <view class="card-title-row between">
+        <view class="row">
+          <text class="card-icon">💳</text>
+          <text class="card-title">店铺收款码（出示给顾客）</text>
+        </view>
+        <text wx:if="{{detail.payQrcode}}" class="zoom-btn" bindtap="openQrcode">全屏展示</text>
+      </view>
+      <view class="qrcode-wrapper" wx:if="{{detail.payQrcode}}" bindtap="openQrcode">
+        <image class="qrcode-img" src="{{detail.payQrcode}}" mode="aspectFit" />
+        <text class="qrcode-hint">点击可全屏放大出示给顾客扫码</text>
+      </view>
+      <view wx:else class="qrcode-empty">
+        <text class="muted">商家尚未在后台配置收款码图片</text>
+      </view>
+    </view>
+  </block>
+
+  <view wx:else class="empty">
+    <view class="empty-icon">⚠️</view>
+    <view class="empty-title">订单详情加载失败</view>
+    <view class="empty-desc">该订单可能已被删除或网络请求失败</view>
+    <button class="btn-secondary btn-sm" bindtap="goBack">返回列表</button>
+  </view>
+</view>

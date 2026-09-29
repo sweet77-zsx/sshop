@@ -1,1 +1,104 @@
-<view class="page"><view wx:if="{{!items.length}}" class="empty">购物车是空的</view><block wx:else><view class="panel item row" wx:for="{{items}}" wx:key="goodsId"><image src="{{item.goodsCover}}" mode="aspectFill"/><view class="info"><view class="item-name">{{item.goodsName}}</view><text class="price">¥{{item.goodsPrice}}</text></view><view class="stepper"><button data-id="{{item.goodsId}}" bindtap="decrease">−</button><text>{{item.goodsNum}}</text><button data-id="{{item.goodsId}}" bindtap="increase">+</button></view><text class="delete" data-id="{{item.goodsId}}" bindtap="remove">删除</text></view><view class="checkout between"><text>合计 <text class="price">¥{{total}}</text></text><button class="primary" bindtap="checkout">去结算</button></view></block></view>
+<view class="page">
+  <!-- 购物车空状态 -->
+  <view wx:if="{{!items.length}}" class="empty cart-empty">
+    <view class="empty-icon">🛒</view>
+    <view class="empty-title">购物车空空如也</view>
+    <view class="empty-desc">想吃点什么？宿舍零食随时送达哦~</view>
+    <button class="btn-primary btn-sm empty-btn" bindtap="goShop">去选购美味零食</button>
+  </view>
+
+  <!-- 购物车有商品 -->
+  <block wx:else>
+    <!-- 头部配送保障横幅 -->
+    <view class="cart-header-card">
+      <view class="header-left">
+        <text class="delivery-icon">🛵</text>
+        <view class="delivery-text-group">
+          <text class="delivery-title">宿舍楼栋直达</text>
+          <text class="delivery-sub">免配送费 · 线下扫码验货付款</text>
+        </view>
+      </view>
+      <view class="clear-btn" bindtap="clearAll">
+        <text class="trash-icon">🗑️</text>
+        <text>清空</text>
+      </view>
+    </view>
+
+    <!-- 商品列表卡片 -->
+    <view class="cart-list">
+      <view class="cart-item-card" wx:for="{{items}}" wx:key="goodsId">
+        <!-- 商品缩略图 -->
+        <view class="item-cover-box">
+          <image 
+            wx:if="{{item.goodsCover}}" 
+            class="item-cover" 
+            src="{{item.goodsCover}}" 
+            mode="aspectFill" 
+          />
+          <view wx:else class="item-placeholder">
+            <text>🍿</text>
+          </view>
+        </view>
+
+        <!-- 商品主体信息 -->
+        <view class="item-info">
+          <view class="item-name">{{item.goodsName}}</view>
+          <view class="item-meta">
+            <text class="item-stock-tip">库存 {{item.goodsStock}} 件</text>
+          </view>
+
+          <!-- 价格与数量加减行 -->
+          <view class="item-bottom-row">
+            <view class="price-box">
+              <text class="price-symbol">¥</text>
+              <text class="price-val">{{item.goodsPrice}}</text>
+            </view>
+
+            <!-- 步进器 -->
+            <view class="stepper-box">
+              <view 
+                class="stepper-btn minus" 
+                data-id="{{item.goodsId}}" 
+                bindtap="decrease"
+              >
+                <text class="stepper-icon">−</text>
+              </view>
+              <view class="stepper-count">{{item.goodsNum}}</view>
+              <view 
+                class="stepper-btn plus {{item.goodsNum >= item.goodsStock ? 'disabled' : ''}}" 
+                data-id="{{item.goodsId}}" 
+                bindtap="increase"
+              >
+                <text class="stepper-icon">+</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 温馨提示 -->
+    <view class="cart-tip-card">
+      <text class="tip-dot">💡</text>
+      <text class="tip-msg">送达寝室门口后，请面对面核对商品并扫描配送员出示的收款码。</text>
+    </view>
+
+    <!-- 底部吸底结算栏 -->
+    <view class="checkout-bar">
+      <view class="checkout-left">
+        <view class="checkout-price-row">
+          <text class="total-label">合计:</text>
+          <view class="price-box">
+            <text class="price-symbol">¥</text>
+            <text class="price-val total-number">{{total}}</text>
+          </view>
+        </view>
+        <view class="free-shipping-tag">校园免配送费</view>
+      </view>
+      
+      <button class="checkout-btn" bindtap="checkout">
+        去结算 ({{totalCount}})
+      </button>
+    </view>
+  </block>
+</view>

@@ -11,21 +11,21 @@
     "pages/merchant/detail/detail"
   ],
   "window": {
-    "navigationBarTitleText": "SShop",
+    "navigationBarTitleText": "食刻零食小铺",
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f5f6f8"
+    "backgroundColor": "#f8fafc"
   },
   "tabBar": {
-    "color": "#7b8190",
-    "selectedColor": "#1677ff",
+    "color": "#94a3b8",
+    "selectedColor": "#10b981",
     "backgroundColor": "#ffffff",
-    "borderStyle": "black",
+    "borderStyle": "white",
     "list": [
-      { "pagePath": "pages/index/index", "text": "商品", "iconPath": "icon/31quanbushangpin.png", "selectedIconPath": "icon/31quanbushangpin.png" },
+      { "pagePath": "pages/index/index", "text": "精选零食", "iconPath": "icon/31quanbushangpin.png", "selectedIconPath": "icon/31quanbushangpin.png" },
       { "pagePath": "pages/cart/cart", "text": "购物车", "iconPath": "icon/gouwuchekong.png", "selectedIconPath": "icon/gouwuchekong.png" },
-      { "pagePath": "pages/order/list/list", "text": "订单", "iconPath": "icon/dingdan.png", "selectedIconPath": "icon/dingdan.png" },
-      { "pagePath": "pages/mine/mine", "text": "我的", "iconPath": "icon/wode.png", "selectedIconPath": "icon/wode.png" }
+      { "pagePath": "pages/order/list/list", "text": "我的订单", "iconPath": "icon/dingdan.png", "selectedIconPath": "icon/dingdan.png" },
+      { "pagePath": "pages/mine/mine", "text": "个人中心", "iconPath": "icon/wode.png", "selectedIconPath": "icon/wode.png" }
     ]
   },
   "style": "v2",

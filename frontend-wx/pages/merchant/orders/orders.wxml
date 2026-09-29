@@ -1,7 +1,145 @@
-<view class="page">
-  <view class="merchant-nav">配送订单</view><view class="merchant-header panel"><view class="between"><text class="shop-state {{config.shopStatus === 0 ? 'closed' : ''}}">{{config.shopStatus === 0 ? '歇业中' : '营业中'}}</text><button class="refresh" bindtap="load">刷新</button></view><view wx:if="{{config.deliveryTip}}" class="muted tip">{{config.deliveryTip}}</view></view>
-  <view wx:if="{{loading}}" class="empty">正在加载订单...</view>
-  <view wx:elif="{{!orders.length}}" class="empty"><view>暂无订单</view><view class="muted empty-tip">新订单会显示在这里</view></view>
-  <block wx:else><view class="panel order" wx:for="{{orders}}" wx:key="orderId" data-id="{{item.orderId}}" bindtap="detail"><view class="between order-head"><text class="order-no">{{item.orderNo}}</text><text class="status status-{{item.orderStatus}}">{{item.statusText}}</text></view><view class="address">{{item.addressInfo}}</view><view wx:if="{{item.remark}}" class="remark">备注：{{item.remark}}</view><view class="between order-foot"><text>{{item.userNickName || '顾客'}}</text><text class="price">¥{{item.totalAmount}}</text></view><view class="order-actions" catchtap="noop"><button wx:if="{{item.orderStatus == 0}}" class="action accept" data-id="{{item.orderId}}" data-type="accept" catchtap="action">接单</button><button wx:if="{{item.orderStatus == 0}}" class="action reject" data-id="{{item.orderId}}" data-type="reject" catchtap="action">拒绝</button><button wx:if="{{item.orderStatus == 1}}" class="action finish" data-id="{{item.orderId}}" data-type="finish" catchtap="action">确认完成</button></view></view></block>
-  <button class="logout" bindtap="logout">退出商家端</button>
+<view class="page page-no-bottom">
+  <!-- 头部控制栏 -->
+  <view class="merchant-top-panel">
+    <view class="merchant-header-row between">
+      <view class="merchant-brand">
+        <text class="merchant-icon">🛵</text>
+        <text class="merchant-title">配送工作台</text>
+        <view class="status-pill {{config && config.shopStatus === 0 ? 'closed' : 'open'}}">
+          <view class="status-dot"></view>
+          <text>{{config && config.shopStatus === 0 ? '歇业中' : '营业中'}}</text>
+        </view>
+      </view>
+
+      <view class="top-actions">
+        <view class="action-btn refresh-btn" bindtap="load">
+          <text class="btn-emoji">🔄</text>
+          <text>刷新</text>
+        </view>
+        <view class="action-btn exit-btn" bindtap="logout">
+          <text>退出</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 状态切换 Tab -->
+    <view class="filter-tabs">
+      <view 
+        wx:for="{{tabs}}" 
+        wx:key="key" 
+        class="filter-tab-item {{activeTab === item.key ? 'active' : ''}}" 
+        data-key="{{item.key}}" 
+        bindtap="setTab"
+      >
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提示横幅 -->
+  <view wx:if="{{config && config.deliveryTip}}" class="tip-bar">
+    <text class="tip-icon">📢</text>
+    <text class="tip-text">{{config.deliveryTip}}</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="empty">
+    <view class="loading-spinner"></view>
+    <view class="empty-desc">正在拉取最新配送订单...</view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:elif="{{!orders.length}}" class="empty">
+    <view class="empty-icon">☕</view>
+    <view class="empty-title">当前暂无相关订单</view>
+    <view class="empty-desc">有新的宿舍订单时会第一时间展示在这里</view>
+  </view>
+
+  <!-- 订单列表 -->
+  <view wx:else class="delivery-orders-list">
+    <view 
+      class="card delivery-card" 
+      wx:for="{{orders}}" 
+      wx:key="orderId" 
+      data-id="{{item.orderId}}" 
+      bindtap="detail"
+      hover-class="card-hover"
+    >
+      <!-- 头部：单号与状态 -->
+      <view class="card-head between">
+        <view class="order-no-group">
+          <text class="order-no-prefix">单号</text>
+          <text class="order-no">{{item.orderNo}}</text>
+        </view>
+        <view class="order-status-badge {{item.statusClass}}">
+          <text>{{item.statusText}}</text>
+        </view>
+      </view>
+
+      <!-- 核心重点：宿舍楼栋与房间号（送货员最需要看清的） -->
+      <view class="address-highlight-box">
+        <text class="building-icon">🏢</text>
+        <view class="building-text-wrap">
+          <text class="building-address">{{item.addressInfo}}</text>
+          <text class="customer-tag">顾客: {{item.userNickName || '微信学生'}}</text>
+        </view>
+      </view>
+
+      <!-- 备注 -->
+      <view wx:if="{{item.remark}}" class="delivery-remark">
+        <text class="remark-icon">📝</text>
+        <text class="remark-content">备注：{{item.remark}}</text>
+      </view>
+
+      <!-- 金额与时间 -->
+      <view class="card-mid between">
+        <text class="order-time">{{item.createTime}}</text>
+        <view class="price-box">
+          <text class="price-label">应收: </text>
+          <text class="price-symbol">¥</text>
+          <text class="price-val">{{item.totalAmount}}</text>
+        </view>
+      </view>
+
+      <!-- 操作按钮条 -->
+      <view class="card-actions" catchtap="noop">
+        <!-- 待接单：接单 / 拒绝 -->
+        <block wx:if="{{item.orderStatus == 0}}">
+          <button 
+            class="btn-action btn-reject" 
+            data-id="{{item.orderId}}" 
+            data-type="reject" 
+            catchtap="action"
+          >
+            拒绝订单
+          </button>
+          <button 
+            class="btn-action btn-accept" 
+            data-id="{{item.orderId}}" 
+            data-type="accept" 
+            catchtap="action"
+          >
+            立即接单
+          </button>
+        </block>
+
+        <!-- 配送中：确认送达 -->
+        <block wx:if="{{item.orderStatus == 1}}">
+          <button 
+            class="btn-action btn-finish" 
+            data-id="{{item.orderId}}" 
+            data-type="finish" 
+            catchtap="action"
+          >
+            ✓ 确认送达与扫码收款
+          </button>
+        </block>
+
+        <!-- 已完成 / 已拒绝 -->
+        <view wx:if="{{item.orderStatus == 2 || item.orderStatus == 3}}" class="done-hint">
+          <text>{{item.orderStatus == 2 ? '订单已送达完成' : '订单已拒绝'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
 </view>

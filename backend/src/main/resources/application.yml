@@ -5,7 +5,7 @@ spring:
   main:
     banner-mode: console
   datasource:
-    url: jdbc:mysql://8.148.27.67:13306/sshop?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    url: ${DB_URL:jdbc:mysql://localhost:3306/sshop?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai}
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:}
   servlet.multipart:
@@ -19,19 +19,19 @@ logging:
     root: INFO
     com.sshop: INFO
 app:
-  jwt-secret: change-this-secret-to-a-random-256-bit-value-change-this-secret
+  jwt-secret: ${JWT_SECRET:change-this-secret-to-a-random-256-bit-value-change-this-secret}
   jwt-expire-hours: 24
   upload-dir: ./uploads
   oss:
     # false 使用本地磁盘；true 使用 S3 兼容对象存储
-    enabled: true
-    endpoint: https://s3.cn-east-1.qiniucs.com
-    region: huadong
+    enabled: ${OSS_ENABLED:false}
+    endpoint: ${OSS_ENDPOINT:https://s3.example.com}
+    region: ${OSS_REGION:us-east-1}
     access-key: ${OSS_ACCESS_KEY:}
     secret-key: ${OSS_SECRET_KEY:}
     bucket: ${OSS_BUCKET:}
     # 建议填写 CDN 或厂商公开访问域名；为空时使用 endpoint/bucket 拼接
-    public-url: ${OSS_PUBLIC_URL:https://img.wlmworld.top}
+    public-url: ${OSS_PUBLIC_URL:}
     key-prefix: uploads
     # MinIO 或不支持虚拟主机桶访问的服务设为 true
     path-style: false

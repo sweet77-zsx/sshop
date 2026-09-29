@@ -1,1 +1,118 @@
-<view class="page"><view class="profile panel"><view class="avatar">{{avatarText}}</view><view wx:if="{{user}}"><view class="nickname">{{user.nickName || user.nick_name || user.nickname || '微信用户'}}</view><view class="muted">顾客端已登录</view></view><button wx:else class="primary" bindtap="login">顾客登录</button></view><view class="panel menu"><view class="between" bindtap="orders"><text>我的订单</text><text class="muted">查看全部 ></text></view><view class="between merchant-entry" bindtap="merchant"><text>商家配送端</text><text class="muted">管理员登录 ></text></view><view wx:if="{{user}}" class="logout" bindtap="clear">退出顾客登录</view></view></view>
+<view class="page page-no-bottom">
+  <!-- 个人信息卡片 -->
+  <view class="profile-card">
+    <view class="profile-main">
+      <view class="avatar-ring">
+        <image wx:if="{{user && user.avatarUrl}}" class="avatar-img" src="{{user.avatarUrl}}" mode="aspectFill" />
+        <view wx:else class="avatar-text-box">
+          <text class="avatar-text">{{avatarText}}</text>
+        </view>
+      </view>
+
+      <view class="user-info-box" wx:if="{{user}}">
+        <view class="nickname-row">
+          <text class="user-nickname">{{user.nickName || user.nick_name || user.nickname || '微信用户'}}</text>
+          <text class="user-badge">零食会员</text>
+        </view>
+        <view class="user-sub">
+          <text class="sub-dot"></text>
+          <text>顾客端已登录 · 享受宿舍直达</text>
+        </view>
+      </view>
+
+      <view class="login-prompt-box" wx:else>
+        <view class="prompt-title">欢迎来到食刻小铺</view>
+        <view class="prompt-desc">登录后体验快捷选购与订单追踪</view>
+      </view>
+    </view>
+
+    <!-- 未登录时突出大按钮 -->
+    <view class="login-btn-row" wx:if="{{!user}}">
+      <button class="btn-primary login-btn" bindtap="login">
+        一键微信授权登录
+      </button>
+    </view>
+  </view>
+
+  <!-- 订单快捷状态入口网格 -->
+  <view class="card order-grid-card">
+    <view class="grid-header between" bindtap="orders">
+      <text class="grid-title">我的订单</text>
+      <view class="grid-more">
+        <text>全部订单</text>
+        <text class="arrow">></text>
+      </view>
+    </view>
+
+    <view class="grid-items">
+      <view class="grid-item" data-status="0" bindtap="goOrderStatus">
+        <view class="item-icon-box yellow">
+          <text class="grid-icon">⏳</text>
+        </view>
+        <text class="grid-label">待接单</text>
+      </view>
+
+      <view class="grid-item" data-status="1" bindtap="goOrderStatus">
+        <view class="item-icon-box blue">
+          <text class="grid-icon">🛵</text>
+        </view>
+        <text class="grid-label">配送中</text>
+      </view>
+
+      <view class="grid-item" data-status="2" bindtap="goOrderStatus">
+        <view class="item-icon-box green">
+          <text class="grid-icon">✅</text>
+        </view>
+        <text class="grid-label">已完成</text>
+      </view>
+
+      <view class="grid-item" data-status="" bindtap="goOrderStatus">
+        <view class="item-icon-box gray">
+          <text class="grid-icon">📑</text>
+        </view>
+        <text class="grid-label">全部订单</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 实用功能卡片 -->
+  <view class="card menu-card">
+    <!-- 商家配送端入口 -->
+    <view class="menu-item between" bindtap="merchant">
+      <view class="menu-left">
+        <view class="menu-icon-wrap merchant-icon-wrap">
+          <text class="menu-emoji">🛵</text>
+        </view>
+        <view class="menu-text-group">
+          <text class="menu-title">商家配送端</text>
+          <text class="menu-sub">小卖部专员 / 送货员接单工作台</text>
+        </view>
+      </view>
+      <view class="menu-right">
+        <text class="manage-tag">配送入口</text>
+        <text class="arrow">></text>
+      </view>
+    </view>
+
+    <view class="menu-divider"></view>
+
+    <!-- 服务说明 -->
+    <view class="menu-item between" bindtap="aboutDelivery">
+      <view class="menu-left">
+        <view class="menu-icon-wrap">
+          <text class="menu-emoji">🏬</text>
+        </view>
+        <view class="menu-text-group">
+          <text class="menu-title">配送服务说明</text>
+          <text class="menu-sub">校园免配送费 · 专人送货上门</text>
+        </view>
+      </view>
+      <text class="arrow">></text>
+    </view>
+  </view>
+
+  <!-- 退出登录按钮 -->
+  <view class="logout-wrapper" wx:if="{{user}}">
+    <button class="logout-btn" bindtap="clear">退出当前账号</button>
+  </view>
+</view>

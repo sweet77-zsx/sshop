@@ -3,7 +3,7 @@ var request = require('./utils/request');
 App({
   // 开发环境请替换为后端可访问地址，真机不能使用 localhost。
   apiBaseUrl: 'http://127.0.0.1:8080',
-  globalData: { user: null, shop: null, subscribeTemplateIds: [] },
+  globalData: { user: null, shop: null, subscribeTemplateIds: [], orderListStatus: undefined },
   onLaunch: function () {
     var user = wx.getStorageSync('wx_user');
     if (user) this.globalData.user = user;

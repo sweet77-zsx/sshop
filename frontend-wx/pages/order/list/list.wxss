@@ -1,1 +1,209 @@
-.tabs { white-space: nowrap; background: #fff; margin: -34rpx -28rpx 30rpx; width: calc(100% + 56rpx); }.tab { display: inline-block; padding: 32rpx 28rpx 26rpx; }.tab.active { color: #1677ff; border-bottom: 4rpx solid #1677ff; }.summary { padding: 32rpx 0; }.status { color: #1677ff; }
+/**
+ * 订单列表 - 简约清新设计
+ */
+
+/* 顶部 Tab 栏 */
+.tabs-container {
+  background: #ffffff;
+  margin: -24rpx -28rpx 24rpx;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 4rpx 14rpx rgba(15, 23, 42, 0.03);
+}
+
+.tabs-scroll {
+  white-space: nowrap;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 10rpx;
+}
+
+.tab-item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24rpx 20rpx 20rpx;
+  position: relative;
+}
+
+.tab-text {
+  font-size: 28rpx;
+  color: #64748b;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.tab-item.active .tab-text {
+  color: #10b981;
+  font-weight: 700;
+  font-size: 29rpx;
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  width: 44rpx;
+  height: 6rpx;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-radius: 3rpx;
+}
+
+/* 订单卡片列表 */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.order-card {
+  padding: 26rpx;
+  transition: transform 0.15s ease;
+}
+
+.card-hover {
+  transform: translateY(-2rpx);
+}
+
+/* 头部单号与状态 */
+.order-head {
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f1f5f9;
+  margin-bottom: 18rpx;
+}
+
+.order-no-group {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.order-no-label {
+  font-size: 22rpx;
+  color: #94a3b8;
+}
+
+.order-no {
+  font-size: 25rpx;
+  font-weight: 600;
+  color: #334155;
+  font-family: monospace;
+}
+
+.copy-btn {
+  font-size: 20rpx;
+  color: #0284c7;
+  background: #f0f9ff;
+  padding: 2rpx 12rpx;
+  border-radius: 6rpx;
+  margin-left: 6rpx;
+}
+
+.order-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  font-size: 23rpx;
+  font-weight: 600;
+  padding: 6rpx 18rpx;
+  border-radius: 30rpx;
+}
+
+.status-icon {
+  font-size: 24rpx;
+}
+
+/* 状态色彩映射 */
+.status-0 {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.status-1 {
+  background: #f0f9ff;
+  color: #0284c7;
+}
+
+.status-2 {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.status-3 {
+  background: #f8fafc;
+  color: #94a3b8;
+}
+
+/* 地址信息 */
+.order-address-box {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.address-icon {
+  font-size: 28rpx;
+}
+
+.address-text {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.order-remark-box {
+  font-size: 23rpx;
+  color: #64748b;
+  background: #f8fafc;
+  padding: 10rpx 16rpx;
+  border-radius: 10rpx;
+  margin-bottom: 18rpx;
+}
+
+.remark-label {
+  color: #94a3b8;
+}
+
+/* 订单尾部 */
+.order-foot {
+  padding-top: 16rpx;
+}
+
+.time-text {
+  font-size: 22rpx;
+  color: #94a3b8;
+}
+
+.amount-action-group {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.order-amount {
+  display: flex;
+  align-items: baseline;
+  gap: 6rpx;
+}
+
+.amount-label {
+  font-size: 22rpx;
+  color: #64748b;
+}
+
+.detail-btn {
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 24rpx;
+  font-weight: 600;
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.detail-arrow {
+  font-size: 20rpx;
+}

@@ -1,2 +1,319 @@
-.header-title { font-size: 36rpx; font-weight: 700; margin-bottom: 22rpx; }.shop-state { color: #198754; font-weight: 700; }.shop-state.closed { color: #e5484d; }.refresh { margin: 0; padding: 0 24rpx; line-height: 64rpx; font-size: 26rpx; color: #1677ff; background: #eef5ff; }.tip { margin-top: 20rpx; line-height: 1.6; }.order { margin-top: 20rpx; }.order-head { margin-bottom: 22rpx; }.order-no { color: #4d586a; font-size: 25rpx; }.status { font-weight: 700; }.status-0 { color: #d98700; }.status-1 { color: #1677ff; }.status-2 { color: #198754; }.status-3 { color: #8b929f; }.address { font-size: 32rpx; font-weight: 600; line-height: 1.5; }.remark { margin-top: 14rpx; color: #8b929f; }.order-foot { margin-top: 26rpx; color: #697386; }.order-actions, .detail-actions { display: flex; gap: 16rpx; margin-top: 24rpx; }.action { flex: 1; margin: 0; line-height: 68rpx; font-size: 26rpx; }.accept { color: #1677ff; background: #eef5ff; }.reject { color: #e5484d; background: #fff1f1; }.finish { color: #198754; background: #edfaf3; }.empty-tip { margin-top: 18rpx; }.logout { margin-top: 36rpx; color: #e5484d; background: #fff; }
-.merchant-nav { padding: 22rpx 0 28rpx; font-size: 36rpx; font-weight: 700; }.nav-logout { margin: 0; padding: 0 18rpx; line-height: 54rpx; font-size: 23rpx; color: #e5484d; background: #fff1f1; }
+/**
+ * 商家配送端 - 订单列表样式
+ */
+
+/* 顶部操作面板 */
+.merchant-top-panel {
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  margin-bottom: 22rpx;
+  box-shadow: 0 4rpx 16rpx rgba(15, 23, 42, 0.04);
+  border: 1rpx solid rgba(226, 232, 240, 0.7);
+}
+
+.merchant-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.merchant-brand {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.merchant-icon {
+  font-size: 38rpx;
+}
+
+.merchant-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 14rpx;
+  border-radius: 24rpx;
+  font-size: 20rpx;
+  font-weight: 600;
+  margin-left: 6rpx;
+}
+
+.status-pill.open {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.status-pill.closed {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.status-dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  margin-right: 6rpx;
+}
+
+.status-pill.open .status-dot {
+  background: #10b981;
+}
+
+.status-pill.closed .status-dot {
+  background: #dc2626;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  font-size: 24rpx;
+  padding: 10rpx 20rpx;
+  border-radius: 24rpx;
+  font-weight: 500;
+}
+
+.refresh-btn {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.exit-btn {
+  background: #fff1f2;
+  color: #f43f5e;
+}
+
+.btn-emoji {
+  font-size: 24rpx;
+}
+
+/* 过滤 Tab */
+.filter-tabs {
+  display: flex;
+  background: #f8fafc;
+  border-radius: 16rpx;
+  padding: 6rpx;
+  gap: 8rpx;
+}
+
+.filter-tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 12rpx 0;
+  font-size: 25rpx;
+  color: #64748b;
+  border-radius: 12rpx;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.filter-tab-item.active {
+  background: #ffffff;
+  color: #10b981;
+  font-weight: 700;
+  box-shadow: 0 2rpx 8rpx rgba(15, 23, 42, 0.08);
+}
+
+/* 提示条 */
+.tip-bar {
+  background: #fffbeb;
+  border-radius: 16rpx;
+  padding: 16rpx 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-bottom: 22rpx;
+}
+
+.tip-icon {
+  font-size: 26rpx;
+}
+
+.tip-text {
+  font-size: 23rpx;
+  color: #b45309;
+  flex: 1;
+}
+
+/* 订单卡片列表 */
+.delivery-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.delivery-card {
+  padding: 26rpx;
+  border: 1.5rpx solid rgba(226, 232, 240, 0.8);
+}
+
+.card-head {
+  padding-bottom: 18rpx;
+  border-bottom: 1rpx solid #f1f5f9;
+  margin-bottom: 18rpx;
+}
+
+.order-no-group {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.order-no-prefix {
+  font-size: 22rpx;
+  color: #94a3b8;
+}
+
+.order-no {
+  font-size: 24rpx;
+  color: #475569;
+  font-family: monospace;
+}
+
+.order-status-badge {
+  font-size: 22rpx;
+  font-weight: 600;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.status-0 { background: #fffbeb; color: #d97706; }
+.status-1 { background: #f0f9ff; color: #0284c7; }
+.status-2 { background: #ecfdf5; color: #059669; }
+.status-3 { background: #f8fafc; color: #94a3b8; }
+
+/* 重点宿舍高亮区 */
+.address-highlight-box {
+  background: #f0fdf4;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  margin-bottom: 16rpx;
+  border: 1rpx solid rgba(16, 185, 129, 0.2);
+}
+
+.building-icon {
+  font-size: 40rpx;
+}
+
+.building-text-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.building-address {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #064e3b;
+  line-height: 1.35;
+}
+
+.customer-tag {
+  font-size: 22rpx;
+  color: #047857;
+  margin-top: 4rpx;
+}
+
+/* 备注 */
+.delivery-remark {
+  background: #f8fafc;
+  border-radius: 12rpx;
+  padding: 12rpx 18rpx;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-bottom: 18rpx;
+}
+
+.remark-icon {
+  font-size: 24rpx;
+}
+
+.remark-content {
+  font-size: 23rpx;
+  color: #64748b;
+  line-height: 1.4;
+  flex: 1;
+}
+
+/* 中部金额与时间 */
+.card-mid {
+  padding-bottom: 18rpx;
+  border-bottom: 1rpx solid #f1f5f9;
+  margin-bottom: 18rpx;
+}
+
+.order-time {
+  font-size: 22rpx;
+  color: #94a3b8;
+}
+
+.price-label {
+  font-size: 24rpx;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* 按钮操作条 */
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.btn-action {
+  flex: 1;
+  height: 74rpx;
+  line-height: 74rpx;
+  text-align: center;
+  font-size: 27rpx;
+  font-weight: 600;
+  border-radius: 37rpx;
+  transition: all 0.15s ease;
+}
+
+.btn-action:active {
+  transform: scale(0.98);
+}
+
+.btn-accept {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 4rpx 14rpx rgba(16, 185, 129, 0.28);
+}
+
+.btn-reject {
+  background: #fff1f2;
+  color: #f43f5e;
+  border: 1rpx solid rgba(244, 63, 94, 0.2);
+}
+
+.btn-finish {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  color: #ffffff;
+  box-shadow: 0 4rpx 14rpx rgba(14, 165, 233, 0.28);
+}
+
+.done-hint {
+  font-size: 23rpx;
+  color: #94a3b8;
+  text-align: center;
+  width: 100%;
+}

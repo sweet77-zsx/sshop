@@ -1,13 +1,99 @@
-<view class="page">
-  <scroll-view scroll-x class="tabs">
-    <view class="tab {{active === item.key ? 'active' : ''}}" wx:for="{{tabs}}" wx:key="key" data-status="{{item.key}}" bindtap="select">{{item.name}}</view>
-  </scroll-view>
-  <view wx:if="{{loading}}" class="empty">加载中...</view>
-  <view wx:elif="{{!orders.length}}" class="empty">暂无订单</view>
-  <block wx:else>
-    <view class="panel order" wx:for="{{orders}}" wx:key="orderNo" data-order-no="{{item.orderNo}}" bindtap="detail">
-      <view class="between"><text>订单 {{item.orderNo}}</text><text class="status">{{item.statusText}}</text></view>
-      <view class="between"><text class="muted">{{item.createTime}}</text><text>¥{{item.totalAmount}}</text></view>
+<view class="page page-no-bottom">
+  <!-- 顶部状态分类 Tab -->
+  <view class="tabs-container">
+    <scroll-view scroll-x class="tabs-scroll" enable-flex>
+      <view 
+        wx:for="{{tabs}}" 
+        wx:key="key" 
+        class="tab-item {{active === item.key ? 'active' : ''}}" 
+        data-status="{{item.key}}" 
+        bindtap="select"
+      >
+        <text class="tab-text">{{item.name}}</text>
+        <view class="tab-indicator" wx:if="{{active === item.key}}"></view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 未登录提示 -->
+  <view wx:if="{{!hasToken}}" class="empty">
+    <view class="empty-icon">🔒</view>
+    <view class="empty-title">尚未登录微信账号</view>
+    <view class="empty-desc">登录后即可同步与查看您在宿舍下的所有订单</view>
+    <button class="btn-primary btn-sm" bindtap="goLogin">一键微信登录</button>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:elif="{{loading}}" class="empty">
+    <view class="loading-spinner"></view>
+    <view class="empty-desc">订单加载中...</view>
+  </view>
+
+  <!-- 无订单空状态 -->
+  <view wx:elif="{{!orders.length}}" class="empty">
+    <view class="empty-icon">📦</view>
+    <view class="empty-title">暂无相关订单</view>
+    <view class="empty-desc">想吃零食了吗？随时下单专人送上门~</view>
+    <button class="btn-primary btn-sm" bindtap="goShop">去选购美味零食</button>
+  </view>
+
+  <!-- 订单列表 -->
+  <view wx:else class="orders-list">
+    <view 
+      class="card order-card" 
+      wx:for="{{orders}}" 
+      wx:key="orderNo" 
+      data-order-no="{{item.orderNo}}" 
+      bindtap="detail"
+      hover-class="card-hover"
+    >
+      <!-- 订单头部 -->
+      <view class="order-head between">
+        <view class="order-no-group">
+          <text class="order-no-label">订单号</text>
+          <text class="order-no">{{item.orderNo}}</text>
+          <text 
+            class="copy-btn" 
+            data-no="{{item.orderNo}}" 
+            catchtap="copyOrderNo"
+          >复制</text>
+        </view>
+        <view class="order-status-badge {{item.statusClass}}">
+          <text class="status-icon">{{item.statusIcon}}</text>
+          <text>{{item.statusText}}</text>
+        </view>
+      </view>
+
+      <!-- 订单地址信息 -->
+      <view class="order-address-box">
+        <text class="address-icon">🏢</text>
+        <text class="address-text">{{item.addressInfo}}</text>
+      </view>
+
+      <view wx:if="{{item.remark}}" class="order-remark-box">
+        <text class="remark-label">备注：</text>
+        <text class="remark-text">{{item.remark}}</text>
+      </view>
+
+      <!-- 订单尾部与操作 -->
+      <view class="order-foot between">
+        <view class="time-box">
+          <text class="time-text">{{item.createTime}}</text>
+        </view>
+        <view class="amount-action-group">
+          <view class="order-amount">
+            <text class="amount-label">实付</text>
+            <view class="price-box">
+              <text class="price-symbol">¥</text>
+              <text class="price-val">{{item.totalAmount}}</text>
+            </view>
+          </view>
+          <view class="detail-btn">
+            <text>详情</text>
+            <text class="detail-arrow">></text>
+          </view>
+        </view>
+      </view>
     </view>
-  </block>
+  </view>
 </view>
